@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .form-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 420px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  .form-group {
+    margin-bottom: 18px;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+    font-size: 14px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus {
+    outline: none;
+    border-color: #4facfe;
+  }
+
+  .error {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background: #4facfe;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s;
+  }
+
+  button:hover {
+    background: #009fe3;
+  }
+
+  .success-msg {
+    display: none;
+    text-align: center;
+    color: #27ae60;
+    font-weight: 600;
+    margin-top: 15px;
+  }
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Create an Account</h2>
+  <form id="registrationForm" novalidate>
+
+    <div class="form-group">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" name="fullname" placeholder="Enter your full name">
+      <div class="error" id="fullnameError">Full name is required</div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email">
+      <div class="error" id="emailError">Enter a valid email address</div>
+    </div>
+
+    <div class="form-group">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="e.g. 0712345678">
+      <div class="error" id="phoneError">Enter a valid phone number</div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Create a password">
+      <div class="error" id="passwordError">Password must be at least 6 characters</div>
+    </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password">
+      <div class="error" id="confirmPasswordError">Passwords do not match</div>
+    </div>
+
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender">
+        <option value="">-- Select --</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <button type="submit">Register</button>
+    <div class="success-msg" id="successMsg">Registration successful!</div>
+  </form>
+</div>
+
+<script>
+  const form = document.getElementById('registrationForm');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let isValid = true;
+
+    // Full name
+    const fullname = document.getElementById('fullname').value.trim();
+    const fullnameError = document.getElementById('fullnameError');
+    if (fullname === '') {
+      fullnameError.style.display = 'block';
+      isValid = false;
+    } else {
+      fullnameError.style.display = 'none';
+    }
+
+    // Email
+    const email = document.getElementById('email').value.trim();
+    const emailError = document.getElementById('emailError');
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      emailError.style.display = 'block';
+      isValid = false;
+    } else {
+      emailError.style.display = 'none';
+    }
+
+    // Phone
+    const phone = document.getElementById('phone').value.trim();
+    const phoneError = document.getElementById('phoneError');
+    const phonePattern = /^[0-9]{7,15}$/;
+    if (!phonePattern.test(phone)) {
+      phoneError.style.display = 'block';
+      isValid = false;
+    } else {
+      phoneError.style.display = 'none';
+    }
+
+    // Password
+    const password = document.getElementById('password').value;
+    const passwordError = document.getElementById('passwordError');
+    if (password.length < 6) {
+      passwordError.style.display = 'block';
+      isValid = false;
+    } else {
+      passwordError.style.display = 'none';
+    }
+
+    // Confirm Password
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+    if (confirmPassword !== password || confirmPassword === '') {
+      confirmPasswordError.style.display = 'block';
+      isValid = false;
+    } else {
+      confirmPasswordError.style.display = 'none';
+    }
+
+    const successMsg = document.getElementById('successMsg');
+    if (isValid) {
+      successMsg.style.display = 'block';
+      form.reset();
+    } else {
+      successMsg.style.display = 'none';
+    }
+  });
+</script>
+
+</body>
+</html>
